@@ -9,7 +9,7 @@ class User:
         self.name = name
 
     def __repr__(self):
-        return 'User(code={self.phone!r}, name={self.name!r})'.format(self=self)
+        return f"User(code={self.phone!r}, name={self.name!r})"
 
     def __eq__(self, other):
         if not isinstance(other, User):
@@ -19,8 +19,8 @@ class User:
 
 
 class UserSchema(Schema):
-    phone = fields.String(data_key='phone_number')
-    name = fields.String(data_key='user_name')
+    phone = fields.String(data_key="phone_number")
+    name = fields.String(data_key="user_name")
 
     @post_load
     def make_user(self, data):
@@ -32,7 +32,7 @@ class UserList:
         self.user_list = user_list
 
     def __repr__(self):
-        return 'UserList(list={self.user_list!r})'.format(self=self)
+        return f"UserList(list={self.user_list!r})"
 
     def __eq__(self, other):
         if not isinstance(other, UserList):
@@ -42,7 +42,7 @@ class UserList:
 
 
 class UserListSchema(Schema):
-    user_list = fields.Nested(UserSchema, many=True, data_key='users')
+    user_list = fields.Nested(UserSchema, many=True, data_key="users")
 
     @post_load
     def make_user(self, data):
