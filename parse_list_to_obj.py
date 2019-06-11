@@ -9,7 +9,13 @@ class User:
         self.name = name
 
     def __repr__(self):
-        return 'Okved(code={self.phone!r}, name={self.name!r})'.format(self=self)
+        return 'User(code={self.phone!r}, name={self.name!r})'.format(self=self)
+
+    def __eq__(self, other):
+        if not isinstance(other, User):
+            return NotImplemented
+
+        return self.phone == other.phone and self.name == other.name
 
 
 class UserSchema(Schema):
@@ -28,6 +34,12 @@ class UserList:
     def __repr__(self):
         return 'UserList(list={self.user_list!r})'.format(self=self)
 
+    def __eq__(self, other):
+        if not isinstance(other, UserList):
+            return NotImplemented
+
+        return self.user_list == other.user_list
+
 
 class UserListSchema(Schema):
     user_list = fields.Nested(UserSchema, many=True, data_key='users')
@@ -35,15 +47,3 @@ class UserListSchema(Schema):
     @post_load
     def make_user(self, data):
         return UserList(**data)
-
-
-user1 = {'phone_number': '9998887766', 'user_name': 'user_name 9998887766'}
-user2 = {'phone_number': '9998886655', 'user_name': 'user_name 9998886655'}
-user_dict = dict(users=[user1, user2])
-
-user_list_schema = UserListSchema()
-
-user_list_obj = user_list_schema.load(user_dict)
-print(type(user_list_obj), user_list_obj)
-users_dict = user_list_schema.dump(user_list_obj)
-print(type(users_dict), users_dict)
